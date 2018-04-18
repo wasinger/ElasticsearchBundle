@@ -11,9 +11,9 @@
 
 namespace ONGR\ElasticsearchBundle\Result;
 
-use Doctrine\Common\Collections\Collection;
 use ONGR\ElasticsearchBundle\Annotation\Nested;
-use ONGR\ElasticsearchBundle\Annotation\Object;
+use ONGR\ElasticsearchBundle\Annotation\ObjectFix;
+use ONGR\ElasticsearchBundle\Collection\Collection;
 use ONGR\ElasticsearchBundle\Mapping\MetadataCollector;
 use ONGR\ElasticsearchBundle\Service\Manager;
 
@@ -43,7 +43,7 @@ class Converter
      * @param array $rawData
      * @param Manager $manager
      *
-     * @return object
+     * @return ObjectFix
      *
      * @throws \LogicException
      */
@@ -78,10 +78,10 @@ class Converter
      * Assigns all properties to object.
      *
      * @param array  $array
-     * @param object $object
+     * @param ObjectFix $object
      * @param array  $aliases
      *
-     * @return object
+     * @return ObjectFix
      */
     public function assignArrayToObject(array $array, $object, array $aliases)
     {
@@ -98,13 +98,13 @@ class Converter
                         }
                         if (is_numeric($value) && (int)$value == $value) {
                             $time = $value;
-                            $value = new \DateTime();
-                            $value->setTimestamp($time);
                         } else {
-                            $value = new \DateTime($value);
+                            $time = strtotime($value);
                         }
+                        $value = new \DateTime();
+                        $value->setTimestamp($time);
                         break;
-                    case Object::NAME:
+                    case ObjectFix::NAME:
                     case Nested::NAME:
                         if ($aliases[$name]['multiple']) {
                             $value = new ObjectIterator($this, $value, $aliases[$name]);
@@ -223,7 +223,7 @@ class Converter
     /**
      * Check if class matches the expected one.
      *
-     * @param object $object
+     * @param ObjectFix $object
      * @param array $expectedClasses
      *
      * @throws \InvalidArgumentException
@@ -235,9 +235,8 @@ class Converter
             throw new \InvalidArgumentException($msg);
         }
 
-        $classes = class_parents($object);
-        $classes[] = $class = get_class($object);
-        if (empty(array_intersect($classes, $expectedClasses))) {
+        $class = get_class($object);
+        if (!in_array($class, $expectedClasses)) {
             throw new \InvalidArgumentException("Expected object of type {$expectedClasses[0]}, got {$class}.");
         }
     }
@@ -264,7 +263,7 @@ class Converter
     /**
      * Returns aliases for certain document.
      *
-     * @param object $document
+     * @param ObjectFix $document
      *
      * @return array
      */

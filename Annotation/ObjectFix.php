@@ -20,7 +20,7 @@ namespace ONGR\ElasticsearchBundle\Annotation;
  * @Annotation
  * @Target("CLASS")
  */
-final class Object
+final class ObjectFix
 {
     const NAME = 'object';
 

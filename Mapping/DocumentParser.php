@@ -30,7 +30,7 @@ class DocumentParser
     const PROPERTY_ANNOTATION = 'ONGR\ElasticsearchBundle\Annotation\Property';
     const EMBEDDED_ANNOTATION = 'ONGR\ElasticsearchBundle\Annotation\Embedded';
     const DOCUMENT_ANNOTATION = 'ONGR\ElasticsearchBundle\Annotation\Document';
-    const OBJECT_ANNOTATION = 'ONGR\ElasticsearchBundle\Annotation\Object';
+    const OBJECT_ANNOTATION = 'ONGR\ElasticsearchBundle\Annotation\ObjectFix';
     const NESTED_ANNOTATION = 'ONGR\ElasticsearchBundle\Annotation\Nested';
 
     // Meta fields
@@ -111,7 +111,6 @@ class DocumentParser
             }
 
             $fields = [];
-            $aliases = $this->getAliases($class, $fields);
 
             $this->documents[$className] = [
                 'type' => $document->type ?: Caser::snake($class->getShortName()),
@@ -122,7 +121,7 @@ class DocumentParser
                         $fields
                     )
                 ),
-                'aliases' => $aliases,
+                'aliases' => $this->getAliases($class, $fields),
                 'analyzers' => $this->getAnalyzers($class),
                 'objects' => $this->getObjects(),
                 'namespace' => $class->getName(),
@@ -251,6 +250,7 @@ class DocumentParser
     private function getAliases(\ReflectionClass $reflectionClass, array &$metaFields = null)
     {
         $reflectionName = $reflectionClass->getName();
+        $directory = $this->guessDirName($reflectionClass);
 
         // We skip cache in case $metaFields is given. This should not affect performance
         // because for each document this method is called only once. For objects it might
@@ -265,8 +265,6 @@ class DocumentParser
         $properties = $this->getDocumentPropertiesReflection($reflectionClass);
 
         foreach ($properties as $name => $property) {
-            $directory = $this->guessDirName($property->getDeclaringClass());
-
             $type = $this->getPropertyAnnotationData($property);
             $type = $type !== null ? $type : $this->getEmbeddedAnnotationData($property);
             $type = $type !== null ? $type : $this->getHashMapAnnotationData($property);
@@ -398,7 +396,7 @@ class DocumentParser
             'Document',
             'Property',
             'Embedded',
-            'Object',
+            'ObjectFix',
             'Nested',
             'Id',
             'ParentDocument',
@@ -472,10 +470,9 @@ class DocumentParser
     private function getAnalyzers(\ReflectionClass $reflectionClass)
     {
         $analyzers = [];
+        $directory = $this->guessDirName($reflectionClass);
 
         foreach ($this->getDocumentPropertiesReflection($reflectionClass) as $name => $property) {
-            $directory = $this->guessDirName($property->getDeclaringClass());
-
             $type = $this->getPropertyAnnotationData($property);
             $type = $type !== null ? $type : $this->getEmbeddedAnnotationData($property);
 
@@ -521,11 +518,10 @@ class DocumentParser
     private function getProperties(\ReflectionClass $reflectionClass, $properties = [], $flag = false)
     {
         $mapping = [];
+        $directory = $this->guessDirName($reflectionClass);
 
         /** @var \ReflectionProperty $property */
         foreach ($this->getDocumentPropertiesReflection($reflectionClass) as $name => $property) {
-            $directory = $this->guessDirName($property->getDeclaringClass());
-
             $type = $this->getPropertyAnnotationData($property);
             $type = $type !== null ? $type : $this->getEmbeddedAnnotationData($property);
             $type = $type !== null ? $type : $this->getHashMapAnnotationData($property);
