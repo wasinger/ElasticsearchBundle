@@ -5,7 +5,7 @@ php:
   - 7.2
 env:
   - SYMFONY="~4.0" ES_VERSION=5.6.9 ES_CLIENT_VERSION=~5.0
-  - SYMFONY="~4.0" ES_VERSION=6.5.4 ES_CLIENT_VERSION=~6.0
+  - SYMFONY="~4.0" ES_VERSION=5.6.9 ES_CLIENT_VERSION=~6.0
 matrix:
   include:
     - php: 5.6
@@ -13,7 +13,7 @@ matrix:
     - php: 7.0
       env: SYMFONY="~3.4" ES_VERSION=5.6.9 ES_CLIENT_VERSION=~5.0
     - php: 7.0
-      env: SYMFONY="~3.4" ES_VERSION=6.5.4 ES_CLIENT_VERSION=~6.0
+      env: SYMFONY="~3.4" ES_VERSION=5.6.9 ES_CLIENT_VERSION=~6.0
 
 install:
   - wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ES_VERSION}.tar.gz
