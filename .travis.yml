@@ -9,6 +9,11 @@ php:
 env:
   global:
     - ES_VERSION=5.6.8 ES_DOWNLOAD_URL=https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ES_VERSION}.tar.gz
+  matrix:
+    - SYMFONY="~3.4"
+    - SYMFONY="~4.0"
+    - SYMFONY="~3.4" ES_VERSION=6.5.4
+    - SYMFONY="~4.0" ES_VERSION=6.5.4
 install:
   - wget ${ES_DOWNLOAD_URL}
   - tar -xzf elasticsearch-${ES_VERSION}.tar.gz
