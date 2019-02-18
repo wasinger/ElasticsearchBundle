@@ -20,7 +20,7 @@ class CategoryObject
 {
     /**
      * @var string
-     * @ES\Property(type="text", options={"index"="not_analyzed"})
+     * @ES\Property(type="text")
      */
     public $title;
 }
