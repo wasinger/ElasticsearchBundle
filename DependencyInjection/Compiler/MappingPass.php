@@ -45,9 +45,9 @@ class MappingPass implements CompilerPassInterface
 
         foreach ($namespaces as $namespace) {
             $indexMapping = $collector->getMapping($namespace);
-            $definition = new Definition(IndexService::class, [
-
-            ]);
+            $definition = new Definition(IndexService::class,
+                []
+            );
 
 //            $container->autowire($namespace, IndexService::class);
         }
