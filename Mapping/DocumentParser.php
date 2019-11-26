@@ -289,6 +289,23 @@ class DocumentParser
             return 'is' . ucfirst($name);
         }
 
+        // if there are underscores in the name convert them to CamelCase
+        if (strpos($name, '_')) {
+            $parts = explode('_', $name);
+            $name = '';
+            foreach($parts as $part) {
+                if ($part) {
+                    $name .= \ucfirst($part);
+                }
+            }
+            if ($class->hasMethod('get' . $name)) {
+                return 'get' . $name;
+            }
+            if ($class->hasMethod('is' . $name)) {
+                return 'is' . $name;
+            }
+        }
+
         throw new \Exception("Could not determine a getter for `$name` of class `{$class->getNamespaceName()}`");
     }
 
@@ -296,6 +313,20 @@ class DocumentParser
     {
         if ($class->hasMethod('set' . ucfirst($name))) {
             return 'set' . ucfirst($name);
+        }
+
+        // if there are underscores in the name convert them to CamelCase
+        if (strpos($name, '_')) {
+            $parts = explode('_', $name);
+            $name = '';
+            foreach($parts as $part) {
+                if ($part) {
+                    $name .= \ucfirst($part);
+                }
+            }
+            if ($class->hasMethod('set' . $name)) {
+                return 'set' . $name;
+            }
         }
 
         throw new \Exception("Could not determine a setter for `$name` of class `{$class->getNamespaceName()}`");
