@@ -293,7 +293,7 @@ class DocumentParser
         if (strpos($name, '_')) {
             $parts = explode('_', $name);
             $name = '';
-            foreach($parts as $part) {
+            foreach ($parts as $part) {
                 if ($part) {
                     $name .= \ucfirst($part);
                 }
@@ -319,7 +319,7 @@ class DocumentParser
         if (strpos($name, '_')) {
             $parts = explode('_', $name);
             $name = '';
-            foreach($parts as $part) {
+            foreach ($parts as $part) {
                 if ($part) {
                     $name .= \ucfirst($part);
                 }
