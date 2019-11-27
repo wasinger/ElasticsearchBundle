@@ -294,17 +294,11 @@ class DocumentParser
 
         // if there are underscores in the name convert them to CamelCase
         if (strpos($name, '_')) {
-            $parts = explode('_', $name);
-            $name = '';
-            foreach ($parts as $part) {
-                if ($part) {
-                    $name .= \ucfirst($part);
-                }
-            }
-            if ($class->hasMethod('get' . $name)) {
+            $name = Caser::camel($name);
+            if ($class->hasMethod('get' . ucfirst($name))) {
                 return 'get' . $name;
             }
-            if ($class->hasMethod('is' . $name)) {
+            if ($class->hasMethod('is' . ucfirst($name))) {
                 return 'is' . $name;
             }
         }
@@ -320,14 +314,8 @@ class DocumentParser
 
         // if there are underscores in the name convert them to CamelCase
         if (strpos($name, '_')) {
-            $parts = explode('_', $name);
-            $name = '';
-            foreach ($parts as $part) {
-                if ($part) {
-                    $name .= \ucfirst($part);
-                }
-            }
-            if ($class->hasMethod('set' . $name)) {
+            $name = Caser::camel($name);
+            if ($class->hasMethod('set' . ucfirst($name))) {
                 return 'set' . $name;
             }
         }
