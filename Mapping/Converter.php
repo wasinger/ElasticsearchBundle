@@ -79,6 +79,10 @@ class Converter
         $object = new $namespace();
 
         foreach ($raw as $field => $value) {
+            if (!isset($metadata[$field])) {
+                // ignore fields not present in metadata
+                continue;
+            }
             $fieldMeta = $metadata[$field];
             $setter = $fieldMeta['setter'];
 
