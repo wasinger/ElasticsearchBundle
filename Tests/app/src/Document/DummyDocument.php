@@ -67,6 +67,12 @@ class DummyDocument
      */
     private $objectCollection;
 
+    /**
+     * @var \DateTimeInterface
+     * @ES\Property(type="date")
+     */
+    private $datetimefield;
+
     public function __construct()
     {
         $this->nestedCollection = new ArrayCollection();
@@ -105,4 +111,15 @@ class DummyDocument
         $this->objectCollection = $objectCollection;
         return $this;
     }
+
+    public function getDatetimefield(): ?\DateTimeInterface
+    {
+        return $this->datetimefield;
+    }
+
+    public function setDatetimefield(\DateTimeInterface $datetimefield): void
+    {
+        $this->datetimefield = $datetimefield;
+    }
+
 }
