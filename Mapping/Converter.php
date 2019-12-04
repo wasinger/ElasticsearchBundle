@@ -64,7 +64,7 @@ class Converter
                 }
             } else {
                 if ($value instanceof \DateTime) {
-                    $value = $value->format(\DateTimeInterface::ISO8601);
+                    $value = $value->format(\DateTime::ISO8601);
                 }
                 $result[$field] = $value;
             }
