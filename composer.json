@@ -10,6 +10,12 @@
             "homepage": "http://www.ongr.io"
         }
     ],
+    "repositories": [
+        {
+	    "type":"git",
+            "url":"https://github.com/wasinger/ElasticsearchDSL"
+	}
+    ],
     "require": {
         "php": "^7.1|^8",
         "symfony/framework-bundle": "^3.4|^4.1",
@@ -27,7 +33,7 @@
         "doctrine/collections": "^1.5",
         "monolog/monolog": "^1.24",
         "elasticsearch/elasticsearch": "^6.0",
-        "ongr/elasticsearch-dsl": "^6.0"
+        "ongr/elasticsearch-dsl": "dev-tueprod"
     },
     "require-dev": {
         "mikey179/vfsstream": "~1.6",
