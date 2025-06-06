@@ -85,8 +85,8 @@ class Configuration implements ConfigurationInterface
 
     private function getAnalysisNode(): NodeDefinition
     {
-        $builder = new TreeBuilder();
-        $node = $builder->root('analysis');
+        $builder = new TreeBuilder('analysis');
+        $node = $builder->getRootNode();
 
         $node
             ->info('Defines analyzers, normalizers, tokenizers and filters')
